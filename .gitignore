@@ -1,0 +1,12 @@
+.vscode/
+.history/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.DS_Store
+.cursorrules
+.cursorignore
+frontend/node_modules/
+build/bin/

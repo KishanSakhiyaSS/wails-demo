@@ -1,0 +1,15 @@
+{
+  "name": "wails-demo",
+  "description": "A desktop app built with Wails, React, TailwindCSS, and Go",
+  "frontend": {
+    "dir": "frontend",
+    "install": "npm install",
+    "build": "npm run build",
+    "dev": "npm run dev"
+  },
+  "backend": {
+    "dir": "backend"
+  },
+  "outputfilename": "wails-demo",
+  "wailsjsdir": "frontend/src/wailsjs"
+}
