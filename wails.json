@@ -11,5 +11,5 @@
     "dir": "backend"
   },
   "outputfilename": "wails-demo",
-  "wailsjsdir": "./frontend/wailsjs"
+  "wailsjsdir": "./frontend"
 }
