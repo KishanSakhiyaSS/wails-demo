@@ -15,7 +15,7 @@ type FinalResponse struct {
 // CPU represents CPU information
 // @Description CPU information including cores, model, cache, frequency, and usage
 type CPU struct {
-	Cores     int    `json:"cores" example:"8" description:"Number of CPU cores"`
+	Cores     int32  `json:"cores" example:"8" description:"Number of CPU cores"`
 	Model     string `json:"model" example:"Intel Core i7-10700K" description:"CPU model name"`
 	CacheSize string `json:"cache_size" example:"8MB" description:"CPU cache size"`
 	Ghz       string `json:"ghz" example:"3.2GHz" description:"CPU frequency"`

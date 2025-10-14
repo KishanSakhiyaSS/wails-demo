@@ -1,0 +1,590 @@
+definitions:
+  models.APIResponse:
+    description: Standard API response structure
+    properties:
+      data: {}
+      error:
+        type: string
+      message:
+        example: System benchmark API is running
+        type: string
+      status:
+        example: ok
+        type: string
+    type: object
+  models.CPU:
+    description: CPU information including cores, model, cache, frequency, and usage
+    properties:
+      cache_size:
+        example: 8MB
+        type: string
+      cores:
+        example: 8
+        type: integer
+      cpu_usage_percentage:
+        example: 45.2%
+        type: string
+      ghz:
+        example: 3.2GHz
+        type: string
+      model:
+        example: Intel Core i7-10700K
+        type: string
+    type: object
+  models.CPUInfo:
+    description: CPU information including cores, model, cache, frequency, and usage
+    properties:
+      cache_size:
+        example: 8MB
+        type: string
+      cores:
+        example: 8
+        type: integer
+      cpu_usage_percentage:
+        example: 45.2%
+        type: string
+      ghz:
+        example: 3.2GHz
+        type: string
+      model:
+        example: Intel Core i7-10700K
+        type: string
+    type: object
+  models.Disk:
+    description: Disk information including total, used, free, and usage percentage
+    properties:
+      free:
+        example: 500GB
+        type: string
+      total:
+        example: 1TB
+        type: string
+      used:
+        example: 500GB
+        type: string
+      used_percentage:
+        example: 50%
+        type: string
+    type: object
+  models.DiskInfo:
+    description: Disk information including total, used, free, and usage percentage
+    properties:
+      free:
+        example: 500GB
+        type: string
+      total:
+        example: 1TB
+        type: string
+      used:
+        example: 500GB
+        type: string
+      used_percentage:
+        example: 50%
+        type: string
+    type: object
+  models.ErrorResponse:
+    description: Error response structure
+    properties:
+      details:
+        example: connection timeout
+        type: string
+      error:
+        example: Failed to get system information
+        type: string
+    type: object
+  models.GPU:
+    description: GPU information including name, VRAM, driver, usage, and clock speed
+    properties:
+      clock_speed:
+        example: 1800MHz
+        type: string
+      driver:
+        example: 470.82.01
+        type: string
+      name:
+        example: NVIDIA GeForce RTX 3080
+        type: string
+      usage_percentage:
+        example: 30%
+        type: string
+      vram_size:
+        example: 10GB
+        type: string
+    type: object
+  models.GPUInfo:
+    description: GPU information including name, VRAM, driver, usage, and clock speed
+    properties:
+      clock_speed:
+        example: 1800MHz
+        type: string
+      driver:
+        example: 470.82.01
+        type: string
+      name:
+        example: NVIDIA GeForce RTX 3080
+        type: string
+      usage_percentage:
+        example: 30%
+        type: string
+      vram_size:
+        example: 10GB
+        type: string
+    type: object
+  models.HardwareInfo:
+    description: Hardware/network interface information including index, MTU, name,
+      hardware address, and flags
+    properties:
+      flags:
+        example: up,broadcast,running,multicast
+        type: string
+      hardware_addr:
+        example: "00:11:22:33:44:55"
+        type: string
+      index:
+        example: 1
+        type: integer
+      mtu:
+        example: 1500
+        type: integer
+      name:
+        example: eth0
+        type: string
+    type: object
+  models.Location:
+    description: Location information including IP, hostname, city, region, country,
+      and timezone
+    properties:
+      city:
+        example: San Francisco
+        type: string
+      country:
+        example: US
+        type: string
+      hostname:
+        example: my-server
+        type: string
+      ip:
+        example: 192.168.1.100
+        type: string
+      loc:
+        example: 37.7749,-122.4194
+        type: string
+      org:
+        example: AS1234 Example Corp
+        type: string
+      postal:
+        example: "94105"
+        type: string
+      readme:
+        example: https://ipinfo.io/missingauth
+        type: string
+      region:
+        example: California
+        type: string
+      timezone:
+        example: America/Los_Angeles
+        type: string
+    type: object
+  models.LocationInfo:
+    description: Location information including IP, hostname, city, region, country,
+      and timezone
+    properties:
+      city:
+        example: San Francisco
+        type: string
+      country:
+        example: US
+        type: string
+      hostname:
+        example: my-server
+        type: string
+      ip:
+        example: 192.168.1.100
+        type: string
+      loc:
+        example: 37.7749,-122.4194
+        type: string
+      org:
+        example: AS1234 Example Corp
+        type: string
+      postal:
+        example: "94105"
+        type: string
+      readme:
+        example: https://ipinfo.io/missingauth
+        type: string
+      region:
+        example: California
+        type: string
+      timezone:
+        example: America/Los_Angeles
+        type: string
+    type: object
+  models.Memory:
+    description: Memory information including total, used, free, available, and usage
+      percentage
+    properties:
+      available:
+        example: 12GB
+        type: string
+      free:
+        example: 4GB
+        type: string
+      total:
+        example: 16GB
+        type: string
+      used:
+        example: 8GB
+        type: string
+      used_percentage:
+        example: 50%
+        type: string
+    type: object
+  models.MemoryInfo:
+    description: Memory information including total, used, free, available, and usage
+      percentage
+    properties:
+      available:
+        example: 12GB
+        type: string
+      free:
+        example: 4GB
+        type: string
+      total:
+        example: 16GB
+        type: string
+      used:
+        example: 8GB
+        type: string
+      used_percentage:
+        example: 50%
+        type: string
+    type: object
+  models.OS:
+    description: Operating system information including name, hostname, platform,
+      version, and uptime
+    properties:
+      hostname:
+        example: my-server
+        type: string
+      kernel_arch:
+        example: x86_64
+        type: string
+      kernel_version:
+        example: 5.4.0-74-generic
+        type: string
+      os:
+        example: linux
+        type: string
+      platform:
+        example: ubuntu
+        type: string
+      platform_family:
+        example: debian
+        type: string
+      platform_version:
+        example: 20.04.3 LTS
+        type: string
+      uptime:
+        example: 86400
+        type: integer
+    type: object
+  models.OSInfo:
+    description: Operating system information including name, hostname, platform,
+      version, and uptime
+    properties:
+      hostname:
+        example: my-server
+        type: string
+      kernel_arch:
+        example: x86_64
+        type: string
+      kernel_version:
+        example: 5.4.0-74-generic
+        type: string
+      os:
+        example: linux
+        type: string
+      platform:
+        example: ubuntu
+        type: string
+      platform_family:
+        example: debian
+        type: string
+      platform_version:
+        example: 20.04.3 LTS
+        type: string
+      uptime:
+        example: 86400
+        type: integer
+    type: object
+  models.SystemInfo:
+    description: Complete system information response containing all system details
+    properties:
+      cpu:
+        $ref: '#/definitions/models.CPU'
+      disk:
+        $ref: '#/definitions/models.Disk'
+      gpus:
+        items:
+          $ref: '#/definitions/models.GPU'
+        type: array
+      hardware:
+        items:
+          $ref: '#/definitions/models.HardwareInfo'
+        type: array
+      location:
+        $ref: '#/definitions/models.Location'
+      memory:
+        $ref: '#/definitions/models.Memory'
+      os:
+        $ref: '#/definitions/models.OS'
+    type: object
+  models.UsagePercentages:
+    description: Usage percentages for CPU, GPU, memory, and disk
+    properties:
+      cpu_usage:
+        example: 45.2%
+        type: string
+      disk_usage:
+        example: 75%
+        type: string
+      gpu_usage:
+        example: 30%
+        type: string
+      memory_usage:
+        example: 50%
+        type: string
+    type: object
+host: localhost:7000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: A comprehensive API for retrieving system information including CPU,
+    GPU, memory, disk, and hardware details.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: System Benchmark API
+  version: "1.0"
+paths:
+  /api/v1/cpu:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve detailed CPU information including cores, frequency, and
+        usage
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CPUInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get CPU information
+      tags:
+      - cpu
+  /api/v1/disk:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve disk information including partitions, usage, and I/O
+        statistics
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DiskInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get disk information
+      tags:
+      - disk
+  /api/v1/gpu:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve GPU information including model, memory, and driver details
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GPUInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get GPU information
+      tags:
+      - gpu
+  /api/v1/hardware:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve hardware information including motherboard, BIOS, and
+        device details
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.HardwareInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get hardware information
+      tags:
+      - hardware
+  /api/v1/location:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve system location information including timezone and locale
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LocationInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get location information
+      tags:
+      - location
+  /api/v1/memory:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve memory information including total, used, and available
+        memory
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MemoryInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get memory information
+      tags:
+      - memory
+  /api/v1/os:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve operating system information including name, version,
+        and architecture
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.OSInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get OS information
+      tags:
+      - os
+  /api/v1/system:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve comprehensive system information including CPU, GPU, memory,
+        disk, and hardware details
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SystemInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get all system information
+      tags:
+      - system
+  /api/v1/test:
+    get:
+      consumes:
+      - application/json
+      description: A flexible endpoint for testing custom methods and logic
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Test route for personal methods
+      tags:
+      - test
+  /api/v1/usage:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve usage percentages for CPU, GPU, memory, and disk
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UsagePercentages'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get usage percentages
+      tags:
+      - usage
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: Check if the API is running and healthy
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+      summary: Health check
+      tags:
+      - health
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -149,7 +149,7 @@ func (s *SystemService) fetchCPUInfo() (*models.CPU, error) {
 	usage := cpuPercent[0]
 
 	return &models.CPU{
-		Cores:     len(cpuInfo),
+		Cores:     cpuInfo[0].Cores,
 		Model:     cpu.ModelName,
 		CacheSize: fmt.Sprintf("%dMB", cpu.CacheSize/1024),
 		Ghz:       fmt.Sprintf("%.2fGHz", float64(cpu.Mhz)/1000),
