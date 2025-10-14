@@ -7,9 +7,14 @@ export default defineConfig({
     outDir: 'dist',
     rollupOptions: {
       output: {
-        entryFileNames: 'assets/[name].js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/[name].[ext]'
+        entryFileNames: 'app.js',
+        chunkFileNames: '[name].js',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.names[0] === 'index.css') {
+            return 'styles.css';
+          }
+          return '[name].[ext]';
+        }
       }
     }
   },

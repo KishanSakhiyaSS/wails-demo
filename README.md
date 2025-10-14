@@ -12,8 +12,7 @@ A modern desktop application built with **Wails v2**, combining the power of Go 
 
 ## ✨ Features
 
-- **User Management**: Get user information through Go handlers
-- **System Information**: Display OS and architecture details
+- **System Information**: Display comprehensive system details including CPU, GPU, memory, disk, OS, and location information
 - **Modern UI**: Beautiful interface built with React and TailwindCSS
 - **Cross-Platform**: Build for Windows, macOS, and Linux
 - **Hot Reload**: Live reload during development
@@ -82,28 +81,27 @@ The compiled binary will be available in the `build/bin` directory.
 ```
 wails-demo/
 ├── backend/               # Go backend code
-│   ├── app/
-│   │   ├── app.go        # Main app structure
-│   │   ├── handlers/     # Request handlers
-│   │   │   ├── user_handler.go
-│   │   │   └── system_handler.go
-│   │   └── models/       # Data models
-│   │       └── user.go
-│   └── internal/         # Internal packages
-│       └── utils/
-│           └── logger.go
+│   └── app/
+│       ├── app.go        # Main app structure
+│       ├── models/       # Data models
+│       │   └── system_models.go
+│       ├── services/     # Business logic
+│       │   └── system_service.go
+│       └── utils/        # Utility functions
+│           ├── app_const.go
+│           └── system_utils.go
 ├── frontend/             # React frontend
 │   ├── src/
 │   │   ├── App.tsx       # Main React component
 │   │   ├── components/   # React components
-│   │   │   ├── Dashboard.tsx
-│   │   │   ├── Sidebar.tsx
-│   │   │   └── UserCard.tsx
+│   │   │   └── Dashboard.tsx
 │   │   ├── services/     # API services
-│   │   │   ├── systemService.ts
-│   │   │   └── userService.ts
-│   │   └── styles/       # CSS styles
-│   │       └── index.css
+│   │   │   └── systemService.ts
+│   │   ├── styles/       # CSS styles
+│   │   │   └── index.css
+│   │   └── types/        # TypeScript types
+│   │       └── system.ts
+│   ├── wailsjs/          # Auto-generated Wails bindings
 │   ├── package.json
 │   └── vite.config.ts
 ├── build/                # Build artifacts
@@ -137,39 +135,31 @@ wails build      # Build production binary
 wails doctor     # Check development environment
 ```
 
-## 🎯 API Handlers
+## 🎯 Available API Methods
 
-### UserHandler
+The app provides the following system information methods accessible from the frontend:
 
-- **GetUser()**: Returns user information
-  ```go
-  {
-    "Name": "Kishan Sakhiya",
-    "Role": "Developer"
-  }
-  ```
-
-### SystemHandler
-
-- **GetSystemInfo()**: Returns system information
-  ```go
-  {
-    "OS": "windows",
-    "Arch": "amd64"
-  }
-  ```
+- **GetAllSystemInfo()**: Returns complete system information
+- **GetCPUInfo()**: Returns CPU details
+- **GetGPUInfo()**: Returns GPU information
+- **GetOSInfo()**: Returns operating system information
+- **GetLocationInfo()**: Returns location details
+- **GetMemoryInfo()**: Returns memory statistics
+- **GetDiskInfo()**: Returns disk usage information
+- **GetHardwareInfo()**: Returns hardware details
+- **GetUsagePercentages()**: Returns current usage percentages
 
 ## 🌐 Calling Go Functions from Frontend
 
 Wails automatically generates TypeScript bindings for your Go functions. Import them like this:
 
 ```typescript
-import { GetUser } from './wailsjs/go/handlers/UserHandler';
-import { GetSystemInfo } from './wailsjs/go/handlers/SystemHandler';
+import { GetAllSystemInfo, GetCPUInfo, GetGPUInfo } from '../../wailsjs/go/app/App';
 
 // Call Go functions
-const user = await GetUser();
-const systemInfo = await GetSystemInfo();
+const systemInfo = await GetAllSystemInfo();
+const cpuInfo = await GetCPUInfo();
+const gpuInfo = await GetGPUInfo();
 ```
 
 ## 🚢 Building for Production
@@ -195,6 +185,15 @@ Edit `wails.json` to customize:
 
 ## 🐛 Troubleshooting
 
+### Missing TypeScript Type Definitions
+
+If you see TypeScript errors like "Could not find a declaration file for module 'react'":
+
+```bash
+cd frontend
+npm install --save-dev @types/react @types/react-dom
+```
+
 ### PowerShell Execution Policy Error
 
 If you encounter execution policy errors on Windows:
@@ -209,6 +208,14 @@ If you see "could not import" errors, ensure:
 - `go.mod` and `main.go` are in the project root
 - Import paths match your module name in `go.mod`
 - Run `go mod tidy` to sync dependencies
+
+### Wails Bindings Issues
+
+If the frontend can't find Wails-generated functions:
+1. Ensure `wails dev` or `wails build` has been run at least once
+2. Check that `wailsjs` directory exists in the frontend folder
+3. Verify import paths point to `../../wailsjs/go/app/App` from services
+4. Run `wails dev` to regenerate TypeScript bindings if they're out of sync
 
 ## 📄 License
 
