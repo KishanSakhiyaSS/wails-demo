@@ -27,11 +27,10 @@ function CircularProgress({ percentage, size = 120, strokeWidth = 8, color = "#3
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   return (
-    <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
+    <div className="relative inline-flex items-center justify-center w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32">
       <svg
-        width={size}
-        height={size}
-        className="transform -rotate-90"
+        className="transform -rotate-90 w-full h-full"
+        viewBox={`0 0 ${size} ${size}`}
       >
         {/* Background circle */}
         <circle
@@ -58,7 +57,7 @@ function CircularProgress({ percentage, size = 120, strokeWidth = 8, color = "#3
       </svg>
       {/* Percentage text */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-2xl font-bold text-white">
+        <span className="text-lg sm:text-xl md:text-2xl font-bold text-white">
           {percentage.toFixed(1)}%
         </span>
       </div>
@@ -77,19 +76,19 @@ interface UsageCardProps {
 
 function UsageCard({ title, percentage, details, icon, color }: UsageCardProps) {
   return (
-    <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="text-2xl">
+    <div className="bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-700">
+      <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+        <div className="text-xl sm:text-2xl">
           {icon}
         </div>
-        <h3 className="text-lg font-semibold text-white">{title}</h3>
+        <h3 className="text-base sm:text-lg font-semibold text-white">{title}</h3>
       </div>
       
-      <div className="flex justify-center mb-4">
+      <div className="flex justify-center mb-3 sm:mb-4">
         <CircularProgress percentage={percentage} color={color} />
       </div>
       
-      <p className="text-sm text-gray-400 text-center">{details}</p>
+      <p className="text-xs sm:text-sm text-gray-400 text-center break-words">{details}</p>
     </div>
   );
 }
@@ -195,23 +194,23 @@ export default function Dashboard({
   return (
     <div className="min-h-screen bg-gray-900">
       {/* Header Section */}
-      <div className="bg-gray-900 px-6 py-8">
+      <div className="bg-gray-900 px-4 sm:px-6 py-4 sm:py-6 md:py-8">
         <div className="max-w-7xl mx-auto">
           {/* Title and Icon */}
-          <div className="flex items-center justify-center mb-4">
-            <div className="text-4xl mr-4">🖥️</div>
+          <div className="flex items-center justify-center mb-4 sm:mb-6">
+            <div className="text-2xl sm:text-3xl md:text-4xl mr-2 sm:mr-4">🖥️</div>
             <div className="text-center">
-              <h1 className="text-4xl font-bold text-purple-500 mb-2">System Benchmark</h1>
-              <p className="text-gray-400 text-lg">Comprehensive System Information Dashboard</p>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-purple-500 mb-1 sm:mb-2">System Benchmark</h1>
+              <p className="text-gray-400 text-sm sm:text-base md:text-lg">Comprehensive System Information Dashboard</p>
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-center gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-4 sm:mb-6 md:mb-8">
             <button
               onClick={handleRefresh}
               disabled={refreshing === 'all'}
-              className={`px-6 py-3 text-white font-medium rounded-lg transition-colors flex items-center gap-2 ${
+              className={`px-4 sm:px-6 py-2 sm:py-3 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2 ${
                 refreshing === 'all' 
                   ? 'bg-purple-500 cursor-not-allowed' 
                   : 'bg-purple-600 hover:bg-purple-700'
@@ -224,7 +223,7 @@ export default function Dashboard({
             </button>
             <button
               onClick={handleExportData}
-              className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white font-medium rounded-lg transition-colors flex items-center gap-2"
+              className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-700 hover:bg-gray-600 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -234,13 +233,13 @@ export default function Dashboard({
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex justify-center">
-            <div className="flex bg-gray-800 rounded-lg p-1">
+          <div className="flex justify-center overflow-x-auto">
+            <div className="flex bg-gray-800 rounded-lg p-1 min-w-max">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-4 py-2 rounded-md font-medium transition-colors ${
+                  className={`px-3 sm:px-4 py-2 rounded-md text-sm sm:text-base font-medium transition-colors whitespace-nowrap ${
                     activeTab === tab.id
                       ? 'bg-purple-600 text-white'
                       : 'text-gray-400 hover:text-white hover:bg-gray-700'
@@ -255,10 +254,10 @@ export default function Dashboard({
       </div>
 
       {/* Main Content */}
-      <div className="px-6 pb-8">
+      <div className="px-4 sm:px-6 pb-6 sm:pb-8">
         <div className="max-w-7xl mx-auto">
           {activeTab === 'overview' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {/* CPU Usage Card */}
               <UsageCard
                 title="CPU Usage"
@@ -298,13 +297,13 @@ export default function Dashboard({
           )}
 
           {activeTab === 'cpu' && (
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-white">CPU Information</h3>
+            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-700">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-0">
+                <h3 className="text-xl sm:text-2xl font-bold text-white">CPU Information</h3>
             <button
               onClick={handleRefreshCPU}
               disabled={refreshing === 'cpu'}
-              className={`px-4 py-2 text-white font-medium rounded-lg transition-colors flex items-center gap-2 ${
+              className={`px-3 sm:px-4 py-2 text-sm sm:text-base text-white font-medium rounded-lg transition-colors flex items-center gap-2 w-full sm:w-auto justify-center ${
                 refreshing === 'cpu' 
                   ? 'bg-blue-500 cursor-not-allowed' 
                   : 'bg-blue-600 hover:bg-blue-700'
@@ -317,7 +316,7 @@ export default function Dashboard({
             </button>
               </div>
               {cpu ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                   <div className="bg-gray-700 rounded-lg p-4">
                     <p className="text-sm text-gray-400 mb-1">Model</p>
                     <p className="font-semibold text-white break-words">{cpu.model}</p>
@@ -344,13 +343,13 @@ export default function Dashboard({
           )}
 
           {activeTab === 'gpu' && (
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-white">GPU Information</h3>
+            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-700">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-0">
+                <h3 className="text-xl sm:text-2xl font-bold text-white">GPU Information</h3>
                 <button
                   onClick={handleRefreshGPU}
                   disabled={refreshing === 'gpu'}
-                  className={`px-4 py-2 text-white font-medium rounded-lg transition-colors flex items-center gap-2 ${
+                  className={`px-3 sm:px-4 py-2 text-sm sm:text-base text-white font-medium rounded-lg transition-colors flex items-center gap-2 w-full sm:w-auto justify-center ${
                     refreshing === 'gpu' 
                       ? 'bg-purple-500 cursor-not-allowed' 
                       : 'bg-purple-600 hover:bg-purple-700'
@@ -363,14 +362,14 @@ export default function Dashboard({
                 </button>
               </div>
               {gpus && gpus.length > 0 ? (
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {gpus.map((gpuItem, index) => (
-                    <div key={index} className="bg-gray-700/50 rounded-lg p-6 border border-gray-600">
-                      <h4 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                    <div key={index} className="bg-gray-700/50 rounded-lg p-4 sm:p-6 border border-gray-600">
+                      <h4 className="text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4 flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
                         <span className="text-purple-400">GPU {index + 1}</span>
-                        <span className="text-gray-400 text-sm">• {gpuItem.name}</span>
+                        <span className="text-gray-400 text-sm break-words">• {gpuItem.name}</span>
                       </h4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                         <div className="bg-gray-700 rounded-lg p-4">
                           <p className="text-sm text-gray-400 mb-1">Name</p>
                           <p className="font-semibold text-white break-words">{gpuItem.name}</p>
@@ -410,13 +409,13 @@ export default function Dashboard({
           )}
 
           {activeTab === 'memory' && (
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-white">Memory Information</h3>
+            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-700">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-0">
+                <h3 className="text-xl sm:text-2xl font-bold text-white">Memory Information</h3>
                 <button
                   onClick={handleRefreshMemory}
                   disabled={refreshing === 'memory'}
-                  className={`px-4 py-2 text-white font-medium rounded-lg transition-colors flex items-center gap-2 ${
+                  className={`px-3 sm:px-4 py-2 text-sm sm:text-base text-white font-medium rounded-lg transition-colors flex items-center gap-2 w-full sm:w-auto justify-center ${
                     refreshing === 'memory' 
                       ? 'bg-pink-500 cursor-not-allowed' 
                       : 'bg-pink-600 hover:bg-pink-700'
@@ -429,37 +428,37 @@ export default function Dashboard({
                 </button>
               </div>
               {memory ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   <div className="bg-gray-700 rounded-lg p-4">
                     <p className="text-sm text-gray-400 mb-1">Usage</p>
-                    <p className="font-semibold text-pink-400 text-xl">{memory.used_percentage}</p>
-                    <p className="text-xs text-gray-400 mt-1">{memory.used} / {memory.total}</p>
+                    <p className="font-semibold text-pink-400 text-lg sm:text-xl">{memory.used_percentage}</p>
+                    <p className="text-xs text-gray-400 mt-1 break-words">{memory.used} / {memory.total}</p>
                   </div>
                   <div className="bg-gray-700 rounded-lg p-4">
                     <p className="text-sm text-gray-400 mb-1">Available</p>
-                    <p className="font-semibold text-white">{memory.available}</p>
+                    <p className="font-semibold text-white break-words">{memory.available}</p>
                   </div>
                   <div className="bg-gray-700 rounded-lg p-4">
                     <p className="text-sm text-gray-400 mb-1">Total</p>
-                    <p className="font-semibold text-white">{memory.total}</p>
+                    <p className="font-semibold text-white break-words">{memory.total}</p>
                   </div>
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-gray-400 text-lg">No memory information available</p>
+                  <p className="text-gray-400 text-base sm:text-lg">No memory information available</p>
                 </div>
               )}
             </div>
           )}
 
           {activeTab === 'disk' && (
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-white">Disk Information</h3>
+            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-700">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-0">
+                <h3 className="text-xl sm:text-2xl font-bold text-white">Disk Information</h3>
                 <button
                   onClick={handleRefreshDisk}
                   disabled={refreshing === 'disk'}
-                  className={`px-4 py-2 text-white font-medium rounded-lg transition-colors flex items-center gap-2 ${
+                  className={`px-3 sm:px-4 py-2 text-sm sm:text-base text-white font-medium rounded-lg transition-colors flex items-center gap-2 w-full sm:w-auto justify-center ${
                     refreshing === 'disk' 
                       ? 'bg-purple-500 cursor-not-allowed' 
                       : 'bg-purple-600 hover:bg-purple-700'
@@ -472,37 +471,37 @@ export default function Dashboard({
                 </button>
               </div>
               {disk ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   <div className="bg-gray-700 rounded-lg p-4">
                     <p className="text-sm text-gray-400 mb-1">Usage</p>
-                    <p className="font-semibold text-purple-400 text-xl">{disk.used_percentage}</p>
-                    <p className="text-xs text-gray-400 mt-1">{disk.used} / {disk.total}</p>
+                    <p className="font-semibold text-purple-400 text-lg sm:text-xl">{disk.used_percentage}</p>
+                    <p className="text-xs text-gray-400 mt-1 break-words">{disk.used} / {disk.total}</p>
                   </div>
                   <div className="bg-gray-700 rounded-lg p-4">
                     <p className="text-sm text-gray-400 mb-1">Free</p>
-                    <p className="font-semibold text-white">{disk.free}</p>
+                    <p className="font-semibold text-white break-words">{disk.free}</p>
                   </div>
                   <div className="bg-gray-700 rounded-lg p-4">
                     <p className="text-sm text-gray-400 mb-1">Total</p>
-                    <p className="font-semibold text-white">{disk.total}</p>
+                    <p className="font-semibold text-white break-words">{disk.total}</p>
                   </div>
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-gray-400 text-lg">No disk information available</p>
+                  <p className="text-gray-400 text-base sm:text-lg">No disk information available</p>
                 </div>
               )}
             </div>
           )}
 
           {activeTab === 'system' && (
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-white">System Information</h3>
+            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-700">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-0">
+                <h3 className="text-xl sm:text-2xl font-bold text-white">System Information</h3>
                 <button
                   onClick={handleRefreshSystem}
                   disabled={refreshing === 'system'}
-                  className={`px-4 py-2 text-white font-medium rounded-lg transition-colors flex items-center gap-2 ${
+                  className={`px-3 sm:px-4 py-2 text-sm sm:text-base text-white font-medium rounded-lg transition-colors flex items-center gap-2 w-full sm:w-auto justify-center ${
                     refreshing === 'system' 
                       ? 'bg-gray-500 cursor-not-allowed' 
                       : 'bg-gray-600 hover:bg-gray-700'
@@ -515,7 +514,7 @@ export default function Dashboard({
                 </button>
               </div>
               {os ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
                   <div className="bg-gray-700 rounded-lg p-4">
                     <p className="text-sm text-gray-400 mb-1">Platform</p>
                     <p className="font-semibold text-white break-words">{os.platform}</p>
@@ -534,29 +533,29 @@ export default function Dashboard({
                   </div>
                   <div className="bg-gray-700 rounded-lg p-4">
                     <p className="text-sm text-gray-400 mb-1">Platform Family</p>
-                    <p className="font-semibold text-white">{os.platform_family}</p>
+                    <p className="font-semibold text-white break-words">{os.platform_family}</p>
                   </div>
                   <div className="bg-gray-700 rounded-lg p-4">
                     <p className="text-sm text-gray-400 mb-1">Platform Version</p>
-                    <p className="font-semibold text-white">{os.platform_version}</p>
+                    <p className="font-semibold text-white break-words">{os.platform_version}</p>
                   </div>
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-gray-400 text-lg">No system information available</p>
+                  <p className="text-gray-400 text-base sm:text-lg">No system information available</p>
                 </div>
               )}
             </div>
           )}
 
           {activeTab === 'hardware' && (
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-white">Network Interfaces</h3>
+            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-700">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-0">
+                <h3 className="text-xl sm:text-2xl font-bold text-white">Network Interfaces</h3>
                 <button
                   onClick={handleRefreshHardware}
                   disabled={refreshing === 'hardware'}
-                  className={`px-4 py-2 text-white font-medium rounded-lg transition-colors flex items-center gap-2 ${
+                  className={`px-3 sm:px-4 py-2 text-sm sm:text-base text-white font-medium rounded-lg transition-colors flex items-center gap-2 w-full sm:w-auto justify-center ${
                     refreshing === 'hardware' 
                       ? 'bg-blue-500 cursor-not-allowed' 
                       : 'bg-blue-600 hover:bg-blue-700'
@@ -569,25 +568,25 @@ export default function Dashboard({
                 </button>
               </div>
               {hardware && hardware.length > 0 ? (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
                   {hardware.map((hw, index) => (
                     <div key={index} className="bg-gray-700 rounded-lg p-4 border border-gray-600">
                       <div className="flex items-center gap-2 mb-3">
-                        <span className="text-blue-400">🌐</span>
-                        <p className="font-semibold text-white">{hw.name}</p>
+                        <span className="text-lg sm:text-xl text-blue-400">🌐</span>
+                        <p className="font-semibold text-white break-words text-sm sm:text-base">{hw.name}</p>
                       </div>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex justify-between">
+                      <div className="space-y-2 text-xs sm:text-sm">
+                        <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0">
                           <span className="text-gray-400">MAC Address:</span>
-                          <span className="font-medium text-white">{hw.hardware_addr}</span>
+                          <span className="font-medium text-white break-all">{hw.hardware_addr}</span>
                         </div>
-                        <div className="flex justify-between">
+                        <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0">
                           <span className="text-gray-400">MTU:</span>
                           <span className="font-medium text-white">{hw.mtu}</span>
                         </div>
-                        <div className="flex justify-between">
+                        <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0">
                           <span className="text-gray-400">Flags:</span>
-                          <span className="font-medium text-white truncate max-w-[200px]" title={hw.flags}>
+                          <span className="font-medium text-white break-words" title={hw.flags}>
                             {hw.flags}
                           </span>
                         </div>
@@ -597,7 +596,7 @@ export default function Dashboard({
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-gray-400 text-lg">No hardware information available</p>
+                  <p className="text-gray-400 text-base sm:text-lg">No hardware information available</p>
                 </div>
               )}
             </div>

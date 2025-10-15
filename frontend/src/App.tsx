@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Dashboard from "./components/Dashboard";
-import { getUser } from "./services/userService";
 import { 
   getCPUInfo, 
   getGPUInfo, 
@@ -11,10 +10,10 @@ import {
   getHardwareInfo,
   getUsagePercentages
 } from "./services/systemService";
-import { User, AllSystemData } from "./types/system";
+import { AllSystemData } from "./types/system";
 
 function App() {
-  const [, setUser] = useState<User | null>(null);
+  
   const [systemData, setSystemData] = useState<AllSystemData>({
     cpu: null,
     gpu: null,
@@ -114,8 +113,6 @@ function App() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const userData = await getUser();
-        setUser(userData);
         await fetchAllSystemData();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load data");
@@ -159,8 +156,8 @@ function App() {
   };
 
   return (
-    <div className="h-screen overflow-hidden bg-gray-900">
-      <main className="h-full">
+    <div className="min-h-screen bg-gray-900">
+      <main className="h-full overflow-auto">
         <Dashboard 
           systemData={systemData} 
           onRefresh={handleRefreshData}
