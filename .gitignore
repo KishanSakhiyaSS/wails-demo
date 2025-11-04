@@ -10,3 +10,4 @@
 .cursorignore
 frontend/node_modules/
 build/bin/
+build/installer/
