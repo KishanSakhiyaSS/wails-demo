@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Dashboard from "./components/Dashboard";
 import SchedulePage from "./pages/SchedulePage";
 import BrowserPage from "./pages/BrowserPage";
+import OpenInApplicationPage from "./pages/OpenInApplicationPage";
 import { 
   getCPUInfo, 
   getGPUInfo, 
@@ -14,7 +15,7 @@ import {
 } from "./services/systemService";
 import { AllSystemData } from "./types/system";
 
-type Page = 'dashboard' | 'scheduler' | 'browser';
+type Page = 'dashboard' | 'scheduler' | 'browser' | 'open-app';
 
 function App() {
   
@@ -199,6 +200,16 @@ function App() {
                 >
                   Browser
                 </button>
+                <button
+                  onClick={() => setCurrentPage('open-app')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    currentPage === 'open-app'
+                      ? 'bg-purple-600 text-white'
+                      : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                  }`}
+                >
+                  Open in Application
+                </button>
               </div>
             </div>
           </div>
@@ -219,8 +230,10 @@ function App() {
           />
         ) : currentPage === 'scheduler' ? (
           <SchedulePage />
-        ) : (
+        ) : currentPage === 'browser' ? (
           <BrowserPage />
+        ) : (
+          <OpenInApplicationPage />
         )}
       </main>
     </div>

@@ -172,3 +172,18 @@ func (a *App) SyncWithSystem() error {
 	}
 	return a.schedulerService.SyncWithSystem()
 }
+
+// OnURL handles custom URL scheme requests
+// This method is called when the app is opened via a custom URL scheme (e.g., wails-demo://open)
+func (a *App) OnURL(url string) {
+	a.logger.Printf("Received URL: %s", url)
+	
+	// Handle different URL paths
+	if url == "wails-demo://open" {
+		a.logger.Println("Application opened from external source")
+		// You can add additional logic here, such as:
+		// - Bringing the window to front
+		// - Navigating to a specific page
+		// - Passing parameters via URL
+	}
+}

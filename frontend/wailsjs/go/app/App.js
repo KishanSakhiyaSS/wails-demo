@@ -50,6 +50,10 @@ export function ListSchedules() {
   return window['go']['app']['App']['ListSchedules']();
 }
 
+export function OnURL(arg1) {
+  return window['go']['app']['App']['OnURL'](arg1);
+}
+
 export function SyncWithSystem() {
   return window['go']['app']['App']['SyncWithSystem']();
 }

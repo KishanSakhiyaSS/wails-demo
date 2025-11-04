@@ -9,6 +9,15 @@
   "license": "MIT",
   "keywords": ["wails", "go", "react", "tailwindcss"],
   "description": "A desktop app built with Wails, React, TailwindCSS, and Go",
+  "info": {
+    "protocols": [
+      {
+        "scheme": "wails-demo",
+        "description": "Wails Demo Application Protocol",
+        "role": "Editor"
+      }
+    ]
+  },
   "frontend": {
     "dir": "frontend",
     "install": "npm install",

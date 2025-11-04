@@ -26,6 +26,8 @@ export function GetUsagePercentages():Promise<any>;
 
 export function ListSchedules():Promise<Array<database.Schedule>>;
 
+export function OnURL(arg1:string):Promise<void>;
+
 export function SyncWithSystem():Promise<void>;
 
 export function ToggleSchedule(arg1:number,arg2:boolean):Promise<void>;
