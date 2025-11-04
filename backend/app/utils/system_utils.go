@@ -10,10 +10,23 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/kishansakhiya/wails-demo/backend/app/models"
 )
+
+// applyWindowsNoWindow applies DETACHED_PROCESS flag and HideWindow to prevent console windows on Windows
+func applyWindowsNoWindow(cmd *exec.Cmd) {
+	if runtime.GOOS == "windows" {
+		if cmd.SysProcAttr == nil {
+			cmd.SysProcAttr = &syscall.SysProcAttr{}
+		}
+		cmd.SysProcAttr.CreationFlags |= CREATE_NO_WINDOW
+		// Also set HideWindow for additional protection
+		cmd.SysProcAttr.HideWindow = true
+	}
+}
 
 // FormatBytes converts bytes to human readable format
 func FormatBytes(bytes uint64, unitInt int) string {
@@ -85,13 +98,14 @@ func getNvidiaGPUInfo() []models.GPU {
 
 	// Check if nvidia-smi is available
 	cmd := exec.CommandContext(ctx, "nvidia-smi", "--query-gpu=name,memory.total,driver_version,utilization.gpu,clocks.current.graphics", "--format=csv,noheader,nounits")
+	applyWindowsNoWindow(cmd)
 	output, err := cmd.Output()
 	if err != nil {
 		return gpus
 	}
 
-	lines := strings.Split(strings.TrimSpace(string(output)), "\n")
-	for _, line := range lines {
+	lines := strings.SplitSeq(strings.TrimSpace(string(output)), "\n")
+	for line := range lines {
 		parts := strings.Split(line, ", ")
 		if len(parts) >= 5 {
 			ram, _ := strconv.Atoi(strings.TrimSpace(parts[1]))
@@ -125,8 +139,8 @@ func getAMDGPUInfo() []models.GPU {
 	}
 
 	// Parse radeontop output (simplified)
-	lines := strings.Split(strings.TrimSpace(string(output)), "\n")
-	for _, line := range lines {
+	lines := strings.SplitSeq(strings.TrimSpace(string(output)), "\n")
+	for line := range lines {
 		if strings.Contains(line, "gpu") {
 			gpu := models.GPU{
 				Name:       "AMD GPU",
@@ -152,7 +166,8 @@ func getWindowsGPUInfo() []models.GPU {
 	defer cancel()
 
 	// Use PowerShell to get GPU info including clock speed
-	cmd := exec.CommandContext(ctx, "powershell", "-Command", `
+	// Use -WindowStyle Hidden to prevent PowerShell window from appearing
+	cmd := 	exec.CommandContext(ctx, "powershell", "-WindowStyle", "Hidden", "-Command", `
 		Get-WmiObject -Class Win32_VideoController | Where-Object {$_.Name -ne $null} | ForEach-Object {
 			[PSCustomObject]@{
 				Name = $_.Name
@@ -163,6 +178,7 @@ func getWindowsGPUInfo() []models.GPU {
 			}
 		} | ConvertTo-Json
 	`)
+	applyWindowsNoWindow(cmd)
 	output, err := cmd.Output()
 	if err != nil {
 		// Fallback: return a generic GPU entry
@@ -355,7 +371,9 @@ func getNvidiaGPUUsage() string {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	cmd := exec.CommandContext(ctx, "nvidia-smi", "--query-gpu=utilization.gpu", "--format=csv,noheader,nounits")
+	cmdString := "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits"
+	cmd := exec.CommandContext(ctx, "powershell", "-WindowStyle", "Hidden", "-NoProfile", "-NonInteractive", "-Command", cmdString)
+	applyWindowsNoWindow(cmd)
 	output, err := cmd.Output()
 	if err != nil {
 		return "0%"
@@ -376,7 +394,9 @@ func getAMDGPUUsage() string {
 	defer cancel()
 
 	// Try radeontop if available
-	cmd := exec.CommandContext(ctx, "radeontop", "-l", "1", "-d", "-")
+	cmdString := "radeontop -l 1 -d -"
+	cmd := exec.CommandContext(ctx, "powershell", "-WindowStyle", "Hidden", "-NoProfile", "-NonInteractive", "-Command", cmdString)
+	applyWindowsNoWindow(cmd)
 	_, err := cmd.Output()
 	if err != nil {
 		return "0%"
@@ -393,7 +413,9 @@ func getIntelGPUUsage() string {
 	defer cancel()
 
 	// Try intel_gpu_top if available
-	cmd := exec.CommandContext(ctx, "intel_gpu_top", "-l", "1")
+	cmdString := "intel_gpu_top -l 1"
+	cmd := exec.CommandContext(ctx, "powershell", "-WindowStyle", "Hidden", "-NoProfile", "-NonInteractive", "-Command", cmdString)
+	applyWindowsNoWindow(cmd)
 	_, err := cmd.Output()
 	if err != nil {
 		return "0%"
@@ -411,7 +433,9 @@ func getWindowsGPUUsage() string {
 
 	// Try multiple methods to get GPU usage on Windows
 	// Method 1: Try nvidia-smi first (if NVIDIA GPU)
-	cmd := exec.CommandContext(ctx, "nvidia-smi", "--query-gpu=utilization.gpu", "--format=csv,noheader,nounits")
+	cmdString := "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits"
+	cmd := exec.CommandContext(ctx, "powershell", "-WindowStyle", "Hidden", "-NoProfile", "-NonInteractive", "-Command", cmdString)
+	applyWindowsNoWindow(cmd)
 	if output, err := cmd.Output(); err == nil {
 		usageStr := strings.TrimSpace(string(output))
 		if usage, err := strconv.Atoi(usageStr); err == nil {
@@ -420,7 +444,8 @@ func getWindowsGPUUsage() string {
 	}
 
 	// Method 2: Try Performance Counters for GPU utilization
-	cmd = exec.CommandContext(ctx, "powershell", "-Command", `
+	// Use -WindowStyle Hidden to prevent PowerShell window from appearing
+	cmd = exec.CommandContext(ctx, "powershell", "-WindowStyle", "Hidden", "-Command", `
 		try {
 			$counters = @(
 				"\GPU Process Memory(*)\Local Usage",
@@ -444,6 +469,7 @@ func getWindowsGPUUsage() string {
 			Write-Output "0"
 		}
 	`)
+	applyWindowsNoWindow(cmd)
 	output, err := cmd.Output()
 	if err != nil {
 		return "0%"
@@ -455,7 +481,8 @@ func getWindowsGPUUsage() string {
 	}
 
 	// Method 3: Try WMI for GPU utilization (fallback)
-	cmd = exec.CommandContext(ctx, "powershell", "-Command", `
+	// Use -WindowStyle Hidden to prevent PowerShell window from appearing
+	cmd = exec.CommandContext(ctx, "powershell", "-WindowStyle", "Hidden", "-Command", `
 		try {
 			$gpu = Get-WmiObject -Class Win32_VideoController | Where-Object {$_.Status -eq "OK"}
 			if ($gpu) {
@@ -469,6 +496,7 @@ func getWindowsGPUUsage() string {
 			Write-Output "0"
 		}
 	`)
+	applyWindowsNoWindow(cmd)
 	output, err = cmd.Output()
 	if err != nil {
 		return "0%"

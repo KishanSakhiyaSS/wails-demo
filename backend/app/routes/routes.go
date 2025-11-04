@@ -2,7 +2,9 @@ package routes
 
 import (
 	"github.com/kishansakhiya/wails-demo/backend/app/controllers"
+	"github.com/kishansakhiya/wails-demo/backend/app/database"
 	"github.com/kishansakhiya/wails-demo/backend/app/middleware"
+	"github.com/kishansakhiya/wails-demo/backend/app/scheduler"
 	"net/http"
 	"time"
 
@@ -15,6 +17,25 @@ import (
 func SetupRoutes(r *gin.Engine) {
 	// Create controller instance
 	systemController := controllers.NewSystemController()
+
+	// Initialize database and scheduler service for schedule endpoints
+	db, err := database.NewDB()
+	if err != nil {
+		// Log error but continue without schedule endpoints
+		// In production, you might want to handle this differently
+	} else {
+		schedulerService := scheduler.NewSchedulerService(db)
+		scheduleController := controllers.NewScheduleController(schedulerService)
+
+		// Schedule endpoints
+		r.POST("/api/v1/schedules", scheduleController.AddSchedule)
+		r.GET("/api/v1/schedules", scheduleController.ListSchedules)
+		r.GET("/api/v1/schedules/:id", scheduleController.GetSchedule)
+		r.PUT("/api/v1/schedules/:id", scheduleController.UpdateSchedule)
+		r.DELETE("/api/v1/schedules/:id", scheduleController.DeleteSchedule)
+		r.PATCH("/api/v1/schedules/:id/toggle", scheduleController.ToggleSchedule)
+		r.POST("/api/v1/schedules/sync", scheduleController.SyncWithSystem)
+	}
 
 	// Add global middleware
 	r.Use(middleware.CORS())

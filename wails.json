@@ -1,10 +1,19 @@
 {
+  "$schema": "https://wails.io/schemas/config.v2.json",
   "name": "wails-demo",
+  "version": "1.0.0",
+  "author": {
+    "name": "Kishan Sakhiya",
+    "email": "kishan.sakhiya@smartsensesolutions.com"
+  },
+  "license": "MIT",
+  "keywords": ["wails", "go", "react", "tailwindcss"],
   "description": "A desktop app built with Wails, React, TailwindCSS, and Go",
   "frontend": {
     "dir": "frontend",
     "install": "npm install",
-    "build": "npm run build",
+    "build": "npm run build --no-cache",
+    "dist": "frontend/dist",
     "dev": "npm run dev"
   },
   "backend": {

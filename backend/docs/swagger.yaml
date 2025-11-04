@@ -1,4 +1,22 @@
 definitions:
+  database.Schedule:
+    properties:
+      created_at:
+        type: string
+      enabled:
+        type: boolean
+      end_time:
+        type: string
+      id:
+        type: integer
+      repeat_pattern:
+        description: once, daily, weekly
+        type: string
+      start_time:
+        type: string
+      title:
+        type: string
+    type: object
   models.APIResponse:
     description: Standard API response structure
     properties:
@@ -509,6 +527,214 @@ paths:
       summary: Get OS information
       tags:
       - os
+  /api/v1/schedules:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all schedules
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: List all schedules
+      tags:
+      - schedule
+    post:
+      consumes:
+      - application/json
+      description: Create a new schedule with the provided details
+      parameters:
+      - description: Schedule details
+        in: body
+        name: schedule
+        required: true
+        schema:
+          $ref: '#/definitions/database.Schedule'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Add a new schedule
+      tags:
+      - schedule
+  /api/v1/schedules/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a schedule by ID
+      parameters:
+      - description: Schedule ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Delete a schedule
+      tags:
+      - schedule
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a specific schedule by ID
+      parameters:
+      - description: Schedule ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get a schedule
+      tags:
+      - schedule
+    put:
+      consumes:
+      - application/json
+      description: Update an existing schedule by ID
+      parameters:
+      - description: Schedule ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated schedule details
+        in: body
+        name: schedule
+        required: true
+        schema:
+          $ref: '#/definitions/database.Schedule'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Update a schedule
+      tags:
+      - schedule
+  /api/v1/schedules/{id}/toggle:
+    patch:
+      consumes:
+      - application/json
+      description: Enable or disable a schedule by ID
+      parameters:
+      - description: Schedule ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Enable/disable flag
+        in: body
+        name: enabled
+        required: true
+        schema:
+          properties:
+            enabled:
+              type: boolean
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Toggle a schedule
+      tags:
+      - schedule
+  /api/v1/schedules/sync:
+    post:
+      consumes:
+      - application/json
+      description: Manually trigger synchronization with the system scheduler
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Sync with system scheduler
+      tags:
+      - schedule
   /api/v1/system:
     get:
       consumes:

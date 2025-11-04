@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Dashboard from "./components/Dashboard";
+import SchedulePage from "./pages/SchedulePage";
 import { 
   getCPUInfo, 
   getGPUInfo, 
@@ -12,8 +13,11 @@ import {
 } from "./services/systemService";
 import { AllSystemData } from "./types/system";
 
+type Page = 'dashboard' | 'scheduler';
+
 function App() {
   
+  const [currentPage, setCurrentPage] = useState<Page>('dashboard');
   const [systemData, setSystemData] = useState<AllSystemData>({
     cpu: null,
     gpu: null,
@@ -157,17 +161,54 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-900">
+      {/* Navigation */}
+      <nav className="bg-gray-800 border-b border-gray-700">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center space-x-8">
+              <h1 className="text-xl font-bold text-white">Wails Demo</h1>
+              <div className="flex space-x-4">
+                <button
+                  onClick={() => setCurrentPage('dashboard')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    currentPage === 'dashboard'
+                      ? 'bg-purple-600 text-white'
+                      : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                  }`}
+                >
+                  System Info
+                </button>
+                <button
+                  onClick={() => setCurrentPage('scheduler')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    currentPage === 'scheduler'
+                      ? 'bg-purple-600 text-white'
+                      : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                  }`}
+                >
+                  App Scheduler
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       <main className="h-full overflow-auto">
-        <Dashboard 
-          systemData={systemData} 
-          onRefresh={handleRefreshData}
-          onRefreshCPU={refreshCPU}
-          onRefreshGPU={refreshGPU}
-          onRefreshMemory={refreshMemory}
-          onRefreshDisk={refreshDisk}
-          onRefreshSystem={refreshSystem}
-          onRefreshHardware={refreshHardware}
-        />
+        {currentPage === 'dashboard' ? (
+          <Dashboard 
+            systemData={systemData} 
+            onRefresh={handleRefreshData}
+            onRefreshCPU={refreshCPU}
+            onRefreshGPU={refreshGPU}
+            onRefreshMemory={refreshMemory}
+            onRefreshDisk={refreshDisk}
+            onRefreshSystem={refreshSystem}
+            onRefreshHardware={refreshHardware}
+          />
+        ) : (
+          <SchedulePage />
+        )}
       </main>
     </div>
   );
