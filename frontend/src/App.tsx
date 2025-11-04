@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Dashboard from "./components/Dashboard";
 import SchedulePage from "./pages/SchedulePage";
+import BrowserPage from "./pages/BrowserPage";
 import { 
   getCPUInfo, 
   getGPUInfo, 
@@ -13,7 +14,7 @@ import {
 } from "./services/systemService";
 import { AllSystemData } from "./types/system";
 
-type Page = 'dashboard' | 'scheduler';
+type Page = 'dashboard' | 'scheduler' | 'browser';
 
 function App() {
   
@@ -188,6 +189,16 @@ function App() {
                 >
                   App Scheduler
                 </button>
+                <button
+                  onClick={() => setCurrentPage('browser')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    currentPage === 'browser'
+                      ? 'bg-purple-600 text-white'
+                      : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                  }`}
+                >
+                  Browser
+                </button>
               </div>
             </div>
           </div>
@@ -206,8 +217,10 @@ function App() {
             onRefreshSystem={refreshSystem}
             onRefreshHardware={refreshHardware}
           />
-        ) : (
+        ) : currentPage === 'scheduler' ? (
           <SchedulePage />
+        ) : (
+          <BrowserPage />
         )}
       </main>
     </div>
